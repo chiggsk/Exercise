@@ -394,8 +394,10 @@ if (file.exists("liverMfuzzClusters_c10_1000.xlsx")==FALSE) {
 
 names(ekeggDotPlotData) <- c("Description","GeneRatio","padj","Cluster")
 
-ekeggDotPlotData$Cluster <- factor(ekeggDotPlotData$Cluster,levels=c("Cluster 1","Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6","Cluster 7","Cluster 8"))
-ekeggDotPlotData$GeneRatio <- sapply(ekeggDotPlotData$GeneRatio, function(x) eval(parse(text=x))) #Convert GeneRatio from fraction character to decimal
+#Specify levels to have clusters in order on dot plot
+ekeggDotPlotData$Cluster <- factor(ekeggDotPlotData$Cluster,levels=c("Cluster 1","Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6","Cluster 7","Cluster 8","Cluster 9","Cluster 10"))
+#Convert GeneRatio from fraction character to decimal
+ekeggDotPlotData$GeneRatio <- sapply(ekeggDotPlotData$GeneRatio, function(x) eval(parse(text=x)))
 
 #Save dot plot as .tiff
 tiff("liverMfuzzClusters_c10_1000_DotPlot_0.05.tiff", units="in", width=12, height=10, res=300)
