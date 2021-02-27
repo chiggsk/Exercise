@@ -395,7 +395,7 @@ if (file.exists("bloodMfuzzClusters_c10_1000.xlsx")==FALSE) {
 names(ekeggDotPlotData) <- c("Description","GeneRatio","padj","Cluster")
 
 #Convert GeneRatio from fraction character to decimal
-ekeggDotPlotData$Cluster <- factor(ekeggDotPlotData$Cluster,levels=c("Cluster 1","Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6","Cluster 7","Cluster 8","Cluster 9","Cluster 10"))
+ekeggDotPlotData$Cluster <- factor(ekeggDotPlotData$Cluster,levels=c("Cluster 1","Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6"))
 #Convert GeneRatio from fraction character to decimal
 ekeggDotPlotData$GeneRatio <- sapply(ekeggDotPlotData$GeneRatio, function(x) eval(parse(text=x))) 
 
