@@ -398,7 +398,7 @@ ekeggDotPlotData$Cluster <- factor(ekeggDotPlotData$Cluster,levels=c("Cluster 1"
 ekeggDotPlotData$GeneRatio <- sapply(ekeggDotPlotData$GeneRatio, function(x) eval(parse(text=x))) #Convert GeneRatio from fraction character to decimal
 
 #Save dot plot as .tiff
-tiff("liverMfuzzClusters_c8_1000_DotPlot_0.05.tiff", units="in", width=12, height=10, res=300)
+tiff("liverMfuzzClusters_c10_1000_DotPlot_0.05.tiff", units="in", width=12, height=10, res=300)
 
 liverDotPlot <- ggplot(ekeggDotPlotData, aes(x= Cluster, y=reorder(Description, dplyr::desc(Description)), size=GeneRatio, color=padj, group=Cluster)) + geom_point(alpha = 0.8) + 
   theme_bw(base_size = 14) + ylab("Description")
