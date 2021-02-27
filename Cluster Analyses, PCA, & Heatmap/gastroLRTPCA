@@ -1,0 +1,173 @@
+rm(list=ls())
+
+library(dplyr)
+library(gplots)
+library(ggplot2)
+library(forcats)
+library(tibble)
+library(DESeq2)
+library(tidyverse)
+library(RColorBrewer)
+library(biomaRt)
+library(sva)
+library(varhandle)
+library(AnnotationDbi)
+library(org.Rn.eg.db)
+
+dataFolder <- setwd("/Users/Chigoziri/MoTrPAC")
+phenotypeDataFile <- "phenotype/merged_dmaqc_data2019-10-15.txt"
+gastroCountsFile <- "transcriptomics/T55_gastrocnemius/rna-seq/results/MoTrPAC_rsem_genes_count_gastrocnemius_v1.txt"
+phenotypeData <- read.table(file=phenotypeDataFile, header = TRUE, sep="\t", quote="", comment.char="")
+gastroCounts <- floor(read.csv(file=gastroCountsFile, header = TRUE, row.names = 1, sep="\t", quote="", comment.char=""))
+
+saveFolder <- setwd("/Users/Chigoziri/MoTrPAC/gastroCtrl")
+
+phenotypeData[,1] <- as.character(phenotypeData[,1])
+
+animalGroup <- phenotypeData$animal.key.anirandgroup
+animalGroupFactor <- fct_infreq(factor(animalGroup))
+
+names(gastroCounts) <- substring(names(gastroCounts), 2)
+sampleIDsGastro <- colnames(gastroCounts)
+vialIDs <- as.character(phenotypeData$vial_label)
+
+#Stratify data based on condition
+gastroPhenotypes <- subset(phenotypeData,phenotypeData$vial_label %in% sampleIDsGastro)
+ControlIPEPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Control - IPE")
+Control7hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Control - 7 hr")
+ExerciseIPEPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - IPE")
+Exercise0.5hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 0.5 hr")
+Exercise1hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 1 hr")
+Exercise4hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 4 hr")
+Exercise7hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 7 hr")
+Exercise24hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 24 hr")
+Exercise48hrPhenotypes <- subset(gastroPhenotypes,gastroPhenotypes$animal.key.anirandgroup %in% "Exercise - 48 hr")
+
+gastroGroups <- gastroPhenotypes$animal.key.anirandgroup
+gastroGroupsFactor <- fct_infreq(factor(gastroGroups))
+
+####Split data into experimental groups based on vial label ID
+ControlIPEIDs <- as.character(intersect(colnames(gastroCounts), ControlIPEPhenotypes$vial_label))
+ControlIPEData <- dplyr::select(gastroCounts, ControlIPEIDs)
+
+Control7hrIDs <- as.character(intersect(colnames(gastroCounts), Control7hrPhenotypes$vial_label))
+Control7hrData <- dplyr::select(gastroCounts, Control7hrIDs)
+
+ExerciseIPEIDs <- as.character(intersect(colnames(gastroCounts), ExerciseIPEPhenotypes$vial_label))
+ExerciseIPEData <- dplyr::select(gastroCounts, ExerciseIPEIDs)
+
+Exercise0.5hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise0.5hrPhenotypes$vial_label))
+Exercise0.5hrData <- dplyr::select(gastroCounts, Exercise0.5hrIDs)
+
+Exercise1hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise1hrPhenotypes$vial_label))
+Exercise1hrData <- dplyr::select(gastroCounts, Exercise1hrIDs)
+
+Exercise4hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise4hrPhenotypes$vial_label))
+Exercise4hrData <- dplyr::select(gastroCounts, Exercise4hrIDs)
+
+Exercise7hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise7hrPhenotypes$vial_label))
+Exercise7hrData <- dplyr::select(gastroCounts, Exercise7hrIDs)
+
+Exercise24hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise24hrPhenotypes$vial_label))
+Exercise24hrData <- dplyr::select(gastroCounts, Exercise24hrIDs)
+
+Exercise48hrIDs <- as.character(intersect(colnames(gastroCounts), Exercise48hrPhenotypes$vial_label))
+Exercise48hrData <- dplyr::select(gastroCounts, Exercise48hrIDs)
+
+###################
+
+# Make the gene IDs a column name in order to join columns effectively
+ControlIPEData_Join <- rownames_to_column(as.data.frame(ControlIPEData), var = "Gene ID") 
+Control7hrData_Join <- rownames_to_column(as.data.frame(Control7hrData), var = "Gene ID") 
+ExerciseIPEData_Join <- rownames_to_column(as.data.frame(ExerciseIPEData), var = "Gene ID")
+Exercise0.5hrData_Join <- rownames_to_column(as.data.frame(Exercise0.5hrData), var = "Gene ID")
+Exercise1hrData_Join <- rownames_to_column(as.data.frame(Exercise1hrData), var = "Gene ID")
+Exercise4hrData_Join <- rownames_to_column(as.data.frame(Exercise4hrData), var = "Gene ID")
+Exercise7hrData_Join <- rownames_to_column(as.data.frame(Exercise7hrData), var = "Gene ID")
+Exercise24hrData_Join <- rownames_to_column(as.data.frame(Exercise24hrData), var = "Gene ID")
+Exercise48hrData_Join <- rownames_to_column(as.data.frame(Exercise48hrData), var = "Gene ID")
+
+#Combine all data for all time points
+dataJoin1 <- inner_join(ControlIPEData_Join, ExerciseIPEData_Join)
+dataJoin2 <- inner_join(dataJoin1, Exercise0.5hrData_Join)
+dataJoin3 <- inner_join(dataJoin2, Exercise1hrData_Join)
+dataJoin4 <- inner_join(dataJoin3, Exercise4hrData_Join)
+dataJoin5 <- inner_join(dataJoin4, Exercise7hrData_Join)
+dataJoin6 <- inner_join(dataJoin5, Exercise24hrData_Join)
+dataJoin7 <- inner_join(dataJoin6, Exercise48hrData_Join)
+dataAllTimes <- column_to_rownames(dataJoin7, var = "Gene ID") # Remove gene ID column
+
+#######
+
+##Set up count matrix input and coldata parameters
+controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
+exerciseIPENames <- sprintf("ExerciseIPE%s",seq(1:nrow(ExerciseIPEPhenotypes)))
+exercise0.5hrNames <- sprintf("Exercise0.5hr%s",seq(1:nrow(Exercise0.5hrPhenotypes)))
+exercise1hrNames <- sprintf("Exercise1hr%s",seq(1:nrow(Exercise1hrPhenotypes)))
+exercise4hrNames <- sprintf("Exercise4hr%s",seq(1:nrow(Exercise4hrPhenotypes)))
+exercise7hrNames <- sprintf("Exercise7hr%s",seq(1:nrow(Exercise7hrPhenotypes)))
+exercise24hrNames <- sprintf("Exercise24hr%s",seq(1:nrow(Exercise24hrPhenotypes)))
+exercise48hrNames <- sprintf("Exercise48hr%s",seq(1:nrow(Exercise48hrPhenotypes)))
+samples <- c(controlIPENames,exerciseIPENames,exercise0.5hrNames,exercise1hrNames,
+             exercise4hrNames,exercise7hrNames,exercise24hrNames,exercise48hrNames)
+sampleIDs <- colnames(dataAllTimes)
+Condition <- c(rep("Control_IPE",nrow(ControlIPEPhenotypes)),rep("Exercise_IPE",nrow(ExerciseIPEPhenotypes)),
+               rep("Exercise0.5hr",nrow(Exercise0.5hrPhenotypes)),rep("Exercise01hr",nrow(Exercise1hrPhenotypes)),
+               rep("Exercise04hr",nrow(Exercise4hrPhenotypes)),rep("Exercise07hr",nrow(Exercise7hrPhenotypes)),
+               rep("Exercise24hr",nrow(Exercise24hrPhenotypes)),rep("Exercise48hr",nrow(Exercise48hrPhenotypes)))
+
+Time <- c(rep("IPE",nrow(ControlIPEPhenotypes)),rep("IPE",nrow(ExerciseIPEPhenotypes)),rep("0.5hr",nrow(Exercise0.5hrPhenotypes)),
+          rep("1hr",nrow(Exercise1hrPhenotypes)),rep("4hr",nrow(Exercise4hrPhenotypes)),
+          rep("7hr",nrow(Exercise7hrPhenotypes)),rep("24hr",nrow(Exercise24hrPhenotypes)),
+          rep("48hr",nrow(Exercise48hrPhenotypes)))
+
+coldata <- data.frame(samples,sampleIDs,Condition,Time)
+rownames(coldata) <- sampleIDs
+
+#Perform differential expression analysis
+dds <- DESeqDataSetFromMatrix(countData = dataAllTimes,
+                              colData = coldata,
+                              design = ~Condition)
+
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+
+factorMat <- c("Control_IPE","Exercise_IPE","Exercise0.5hr","Exercise01hr","Exercise04hr","Exercise07hr","Exercise24hr","Exercise48hr")
+dds$Condition <- factor(dds$Condition, levels=factorMat)
+
+#Perform LRT
+dds_LRT <- DESeq(dds, test="LRT", reduced = ~1) #Perform LRT to compare all levels at once, as opposed to pairwise comparisons
+res_LRT <- results(dds_LRT) #Alpha by default is set to 0.1
+
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res_LRT$symbol = mapIds(org.Rn.eg.db,
+                        keys=row.names(res_LRT), 
+                        column="SYMBOL",
+                        keytype="ENSEMBL",
+                        multiVals="first")
+res_LRT$ENTREZ = mapIds(org.Rn.eg.db,
+                        keys=row.names(res_LRT), 
+                        column="ENTREZID",
+                        keytype="ENSEMBL",
+                        multiVals="first")
+
+#Apply variance stabilizing transformation
+rld<- vst(dds, blind= FALSE)
+rld_mat <- assay(rld)
+
+save(res_LRT, rld, rld_mat, coldata, file = "gastro_LRTData.RData")
+
+#Plot PCA
+tiff("gastroLRTPCA.tiff", units="in", width=12, height=8, res=300)
+pcaData <- plotPCA(rld, intgroup = "Condition",returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=Condition)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  scale_color_discrete(name = "Time", 
+                       labels = c("Ctrl", "0 hr", "0.5 hr","1 hr","4 hr","7 hr","24 hr","48 hr")) +
+  theme(text = element_text(size=14)) + 
+  coord_fixed()
+dev.off()
+
