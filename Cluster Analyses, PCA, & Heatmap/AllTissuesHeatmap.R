@@ -449,7 +449,7 @@ names2 <- intersect(names1, liverrownames$gene)
 names3 <- intersect(names2, adiposerownames$gene)
 names4 <- intersect(names3, bloodrownames$gene)
 
-#Convery common significant Ensembl IDs to gene symbols
+#Convert common significant Ensembl IDs to gene symbols
 intersectSymbols <- as.data.frame(mapIds(org.Rn.eg.db,
                                     keys=names4, 
                                     column="SYMBOL",
