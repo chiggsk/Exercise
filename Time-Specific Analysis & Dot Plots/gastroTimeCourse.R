@@ -291,7 +291,7 @@ save(res, file = "gastro_24hrCtrl.RData")
 ####48hr-Control Comparison####
 
 DataCtrl48hr <- inner_join(ControlIPEData_Join, Exercise48hrData_Join)
-DataCtrl48hr <- column_to_rownames(DataCtrl48hr, var = "Gene ID") # Remove gene ID column
+DataCtrl48hr <- column_to_rownames(DataCtrl48hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
