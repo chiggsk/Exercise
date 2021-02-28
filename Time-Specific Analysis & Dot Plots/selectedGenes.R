@@ -15,7 +15,7 @@ library(tibble)
 setwd("/Users/Chigoziri/MoTrPAC")
 
 #Reads list of genes you're interested in; gene symbol is in column 1, Entrez ID is in column 2
-selectedGeneList <- read.csv(file="Favorite_Gene_List_Blood.csv", header = TRUE)
+selectedGeneList <- read.csv(file="SelectedGeneList.csv", header = TRUE)
 
 ####0 hour####
 
