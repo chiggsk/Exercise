@@ -125,8 +125,8 @@ save(res, file = "gastro_IPECtrl.RData")
 
 ####0.5hr-Control Comparison####
 
-DataCtrl0.5hr <- inner_join(ExerciseIPEData_Join, Exercise0.5hrData_Join)
-DataCtrl0.5hr <- column_to_rownames(DataEx0.5hr, var = "Gene ID")
+DataCtrl0.5hr <- inner_join(ControlIPEData_Join, Exercise0.5hrData_Join)
+DataCtrl0.5hr <- column_to_rownames(DataCtrl0.5hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
@@ -158,8 +158,8 @@ save(res, file = "gastro_0.5hrCtrl.RData")
 
 ####1hr-Control Comparison####
 
-DataCtrl1hr <- inner_join(ExerciseIPEData_Join, Exercise1hrData_Join)
-DataCtrl1hr <- column_to_rownames(DataEx1hr, var = "Gene ID")
+DataCtrl1hr <- inner_join(ControlIPEData_Join, Exercise1hrData_Join)
+DataCtrl1hr <- column_to_rownames(DataCtrl1hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
@@ -191,8 +191,8 @@ save(res, file = "gastro_1hrCtrl.RData")
 
 ####4hr-Control Comparison####
 
-DataCtrl4hr <- inner_join(ExerciseIPEData_Join, Exercise4hrData_Join)
-DataCtrl4hr <- column_to_rownames(DataEx4hr, var = "Gene ID")
+DataCtrl4hr <- inner_join(ControlIPEData_Join, Exercise4hrData_Join)
+DataCtrl4hr <- column_to_rownames(DataCtrl4hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
@@ -224,8 +224,8 @@ save(res, file = "gastro_4hrCtrl.RData")
 
 ####7hr-Control Comparison####
 
-DataCtrl7hr <- inner_join(ExerciseIPEData_Join, Exercise7hrData_Join)
-DataCtrl7hr <- column_to_rownames(DataEx7hr, var = "Gene ID")
+DataCtrl7hr <- inner_join(ControlIPEData_Join, Exercise7hrData_Join)
+DataCtrl7hr <- column_to_rownames(DataCtrl7hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
@@ -257,8 +257,8 @@ save(res, file = "gastro_7hrCtrl.RData")
 
 ####24hr-Control Comparison####
 
-DataCtrl24hr <- inner_join(ExerciseIPEData_Join, Exercise24hrData_Join)
-DataCtrl24hr <- column_to_rownames(DataEx24hr, var = "Gene ID")
+DataCtrl24hr <- inner_join(ControlIPEData_Join, Exercise24hrData_Join)
+DataCtrl24hr <- column_to_rownames(DataCtrl24hr, var = "Gene ID")
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
@@ -290,8 +290,8 @@ save(res, file = "gastro_24hrCtrl.RData")
 
 ####48hr-Control Comparison####
 
-DataCtrl48hr <- inner_join(ExerciseIPEData_Join, Exercise48hrData_Join)
-DataCtrl48hr <- column_to_rownames(DataEx48hr, var = "Gene ID")
+DataCtrl48hr <- inner_join(ControlIPEData_Join, Exercise48hrData_Join)
+DataCtrl48hr <- column_to_rownames(DataCtrl48hr, var = "Gene ID") # Remove gene ID column
 
 ##Count matrix input
 controlIPENames <- sprintf("ControlIPE%s",seq(1:nrow(ControlIPEPhenotypes)))
