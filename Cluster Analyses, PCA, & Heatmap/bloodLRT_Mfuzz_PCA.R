@@ -240,9 +240,9 @@ dataAllTimes <- column_to_rownames(dataJoin7, var = "geneNames") # Remove gene I
 dataAllTimesMat <- as.matrix(dataAllTimes)  
 
 blood_eset <- ExpressionSet(assayData = dataAllTimesMat)
-
 mest <- mestimate(blood_eset)
 
+#Run Mfuzz algorithm
 dataFuzz <- mfuzz(blood_eset,10,mest)
 
 #Genes within the core of the cluster, with a membership score greater than 0.4
