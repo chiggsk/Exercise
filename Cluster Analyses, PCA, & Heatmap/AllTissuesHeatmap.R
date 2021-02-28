@@ -16,6 +16,8 @@ library(AnnotationDbi)
 library(org.Rn.eg.db)
 library(circlize)
 
+####NOTE: This script requires data generated from LRT analyses for each tissue####
+
 setwd("/Users/Chigoziri/MoTrPAC/gastroCtrl")
 load("gastro_LRTData.RData")
 
