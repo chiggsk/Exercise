@@ -565,7 +565,7 @@ hmap <- ComplexHeatmap::Heatmap(as.matrix(join4),
                         top_annotation = colAnn)
 
 #Save heatmap file as .tiff
-tiff("ComplexHeatmap_AllTissues_v2.tiff", units="in", width=18, height=16, res=300)
+tiff("ComplexHeatmap_AllTissues.tiff", units="in", width=18, height=16, res=300)
 draw(hmap,
      merge_legends = TRUE,
      heatmap_legend_side = 'right',
