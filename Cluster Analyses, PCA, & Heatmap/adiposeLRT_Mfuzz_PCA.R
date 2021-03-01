@@ -244,7 +244,7 @@ adipose_eset <- ExpressionSet(assayData = dataAllTimesMat)
 mest <- mestimate(adipose_eset)
 
 #Run Mfuzz algorithm
-dataFuzz <- mfuzz(adipose_eset,10,mest)
+dataFuzz <- mfuzz(adipose_eset,6,mest)
 
 #Genes within the core of the cluster, with a membership score greater than 0.4
 dataFuzz_acore <- acore(adipose_eset,dataFuzz,min.acore=0.4) 
