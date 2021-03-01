@@ -241,10 +241,10 @@ dataAllTimes <- column_to_rownames(dataJoin7, var = "geneNames") # Remove gene I
 dataAllTimesMat <- as.matrix(dataAllTimes)  
 
 heart_eset <- ExpressionSet(assayData = dataAllTimesMat)
-
 mest <- mestimate(heart_eset)
 
-dataFuzz <- mfuzz(heart_eset,10,mest)
+#Run Mfuzz algorithm
+dataFuzz <- mfuzz(heart_eset,8,mest)
 
 #Genes within the core of the cluster, with a membership score greater than 0.4
 dataFuzz_acore <- acore(heart_eset,dataFuzz,min.acore=0.4) 
