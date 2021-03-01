@@ -176,7 +176,7 @@ sig_res_LRT <- res_LRT %>%
 sigLRT_genes <- sig_res_LRT %>% 
   pull(gene)
 
-# Subset results for faster cluster finding (for classroom demo purposes)
+# Subset results for faster cluster finding
 clustering_sig_genes <- sig_res_LRT %>%
   arrange(padj) %>%
   head(n=1000)
@@ -243,7 +243,7 @@ blood_eset <- ExpressionSet(assayData = dataAllTimesMat)
 mest <- mestimate(blood_eset)
 
 #Run Mfuzz algorithm
-dataFuzz <- mfuzz(blood_eset,10,mest)
+dataFuzz <- mfuzz(blood_eset,6,mest)
 
 #Genes within the core of the cluster, with a membership score greater than 0.4
 dataFuzz_acore <- acore(blood_eset,dataFuzz,min.acore=0.4) 
