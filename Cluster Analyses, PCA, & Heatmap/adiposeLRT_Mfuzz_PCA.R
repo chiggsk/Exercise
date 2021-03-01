@@ -177,7 +177,7 @@ sig_res_LRT <- res_LRT %>%
 sigLRT_genes <- sig_res_LRT %>% 
   pull(gene)
 
-# Subset results for faster cluster finding (for classroom demo purposes)
+# Subset results for faster cluster finding
 clustering_sig_genes <- sig_res_LRT %>%
   arrange(padj) %>%
   head(n=1000)
