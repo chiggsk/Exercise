@@ -409,18 +409,3 @@ gastroDotPlot+scale_size(range = c(2, 8))
 
 dev.off()
 
-####Plot PCA####
-
-tiff("gastroLRTPCA.tiff", units="in", width=12, height=8, res=300)
-pcaData <- plotPCA(rld, intgroup = "Condition",returnData=TRUE)
-percentVar <- round(100 * attr(pcaData, "percentVar"))
-ggplot(pcaData, aes(PC1, PC2, color=Condition)) +
-  geom_point(size=3) +
-  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
-  scale_color_discrete(name = "Time", 
-                       labels = c("Ctrl", "0 hr", "0.5 hr","1 hr","4 hr","7 hr","24 hr","48 hr")) +
-  theme(text = element_text(size=14)) + 
-  coord_fixed()
-dev.off()
-
