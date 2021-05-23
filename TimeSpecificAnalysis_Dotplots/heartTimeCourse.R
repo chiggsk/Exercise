@@ -6,7 +6,6 @@ library(ggplot2)
 library(forcats)
 library(tibble)
 library(tidyverse)
-library(DESeq2)
 library(RColorBrewer)
 library(biomaRt)
 library(sva)
@@ -121,6 +120,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heartCtrl")
 save(res, file = "heart_IPECtrl.RData")
 
 ####0.5hr-Control Comparison####
@@ -154,6 +166,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart0.5hr")
 save(res, file = "heart_0.5hrCtrl.RData")
 
 ####1hr-Control Comparison####
@@ -187,6 +212,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart1hr")
 save(res, file = "heart_1hrCtrl.RData")
 
 ####4hr-Control Comparison####
@@ -220,6 +258,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart4hr")
 save(res, file = "heart_4hrCtrl.RData")
 
 ####7hr-Control Comparison####
@@ -253,6 +304,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart7hr")
 save(res, file = "heart_7hrCtrl.RData")
 
 ####24hr-Control Comparison####
@@ -286,6 +350,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05) #Alpha by default is set to 0.1
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart24hr")
 save(res, file = "heart_24hrCtrl.RData")
 
 ####48hr-Control Comparison####
@@ -319,6 +396,19 @@ dds$condition <- relevel(dds$condition, "ControlIPE")
 dds <- DESeq(dds)
 res <- results(dds, alpha = 0.05)
 
+#Convert Ensembl IDs to gene symbols and Entrez IDs
+res$symbol = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="SYMBOL",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+res$ENTREZ = mapIds(org.Rn.eg.db,
+                    keys=row.names(res), 
+                    column="ENTREZID",
+                    keytype="ENSEMBL",
+                    multiVals="first")
+
+setwd("/Users/Chigoziri/MoTrPAC/heart48hr")
 save(res, file = "heart_48hrCtrl.RData")
 
 ####Perform KEGG enrichment for all time points and put data together for dot plots####
@@ -328,8 +418,8 @@ load("heart_IPECtrl.RData")
 
 foldchanges_IPE <- res$log2FoldChange
 padj_IPE <- res$padj
-names(foldchanges_IPE) <- res$entrez
-names(padj_IPE) <- res$entrez
+names(foldchanges_IPE) <- res$ENTREZ
+names(padj_IPE) <- res$ENTREZ
 
 #Set padj and logFC cutoffs, and filter genes based on these cutoffs
 padj.cutoff <- 0.05
@@ -343,6 +433,8 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Create list with length of all time points
+ekeggDotPlotData <- data.frame(Description=as.character(),
+                               GeneRatio=as.numeric(),padj=as.numeric(),cluster=as.character())
 ekeggTimeCourseGeneList <- vector(mode = "list", length = 7)
 names(ekeggTimeCourseGeneList) <- c("0hr","0.5hr","1hr","4hr","7hr","24hr","48hr")
 sheetTitles <- names(ekeggTimeCourseGeneList)
@@ -353,7 +445,7 @@ ekeggEnrichedPathwaysWB <- createWorkbook()
 addWorksheet(ekeggEnrichedPathwaysWB, "Group Pathways")
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekeggIPE <- enrichKEGG(gene         = gene,
                        organism     = 'rno',
                        pvalueCutoff = 0.05)
@@ -375,7 +467,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -421,8 +513,8 @@ load("heart_0.5hrCtrl.RData")
 
 foldchanges_0.5hr <- res$log2FoldChange
 padj_0.5hr <- res$padj
-names(foldchanges_0.5hr) <- res$entrez
-names(padj_0.5hr) <- res$entrez
+names(foldchanges_0.5hr) <- res$ENTREZ
+names(padj_0.5hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -433,7 +525,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg0.5hr <- enrichKEGG(gene         = gene,
                          organism     = 'rno',
                          pvalueCutoff = 0.05)
@@ -455,7 +547,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -501,8 +593,8 @@ load("heart_1hrCtrl.RData")
 
 foldchanges_1hr <- res$log2FoldChange
 padj_1hr <- res$padj
-names(foldchanges_1hr) <- res$entrez
-names(padj_1hr) <- res$entrez
+names(foldchanges_1hr) <- res$ENTREZ
+names(padj_1hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -513,7 +605,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg1hr <- enrichKEGG(gene         = gene,
                        organism     = 'rno',
                        pvalueCutoff = 0.05)
@@ -535,7 +627,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -581,8 +673,8 @@ load("heart_4hrCtrl.RData")
 
 foldchanges_4hr <- res$log2FoldChange
 padj_4hr <- res$padj
-names(foldchanges_4hr) <- res$entrez
-names(padj_4hr) <- res$entrez
+names(foldchanges_4hr) <- res$ENTREZ
+names(padj_4hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -593,7 +685,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg4hr <- enrichKEGG(gene         = gene,
                        organism     = 'rno',
                        pvalueCutoff = 0.05)
@@ -615,7 +707,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -661,8 +753,8 @@ load("heart_7hrCtrl.RData")
 
 foldchanges_7hr <- res$log2FoldChange
 padj_7hr <- res$padj
-names(foldchanges_7hr) <- res$entrez
-names(padj_7hr) <- res$entrez
+names(foldchanges_7hr) <- res$ENTREZ
+names(padj_7hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -673,7 +765,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg7hr <- enrichKEGG(gene         = gene,
                        organism     = 'rno',
                        pvalueCutoff = 0.05)
@@ -695,7 +787,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -740,8 +832,8 @@ load("heart_24hrCtrl.RData")
 
 foldchanges_24hr <- res$log2FoldChange
 padj_24hr <- res$padj
-names(foldchanges_24hr) <- res$entrez
-names(padj_24hr) <- res$entrez
+names(foldchanges_24hr) <- res$ENTREZ
+names(padj_24hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -752,7 +844,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg24hr <- enrichKEGG(gene         = gene,
                         organism     = 'rno',
                         pvalueCutoff = 0.05)
@@ -774,7 +866,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
@@ -820,8 +912,8 @@ load("heart_48hrCtrl.RData")
 
 foldchanges_48hr <- res$log2FoldChange
 padj_48hr <- res$padj
-names(foldchanges_48hr) <- res$entrez
-names(padj_48hr) <- res$entrez
+names(foldchanges_48hr) <- res$ENTREZ
+names(padj_48hr) <- res$ENTREZ
 
 #Filter genes based on padj and logFC cutoffs
 sig_res <- res %>%
@@ -832,7 +924,7 @@ sig_res <- res %>%
   filter(abs(log2FoldChange) >= FC.cutoff)
 
 #Perform KEGG enrichment and generate dotplot data for each time point
-gene <- sig_res$entrez #Input only genes which fell into a particular cluster for that enrichment
+gene <- sig_res$ENTREZ #Input only genes which fell into a particular cluster for that enrichment
 ekegg48hr <- enrichKEGG(gene         = gene,
                         organism     = 'rno',
                         pvalueCutoff = 0.05)
@@ -854,7 +946,7 @@ for (j in 1:length(ekeggSplit)) {
   
   ekeggUnlist <- unlist(ekeggSplit[[j]])
   ekeggENTREZList[[j]] <- ekeggUnlist
-  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$entrez %in% ekeggUnlist]
+  ekeggFCList[[j]] <- sig_res$log2FoldChange[sig_res$ENTREZ %in% ekeggUnlist]
   medianFC[[j]] <- median(ekeggFCList[[j]])
   ekeggSymbol = mapIds(org.Rn.eg.db,
                        keys=ekeggUnlist, 
